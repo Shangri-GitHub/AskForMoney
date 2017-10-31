@@ -26,7 +26,7 @@
                 <div class="grid-content bg-purple">
                     <el-menu
                             :collapse="isCollapse"
-                            default-active="2"
+                            default-active="1-1"
                             class="el-menu-vertical-demo"
                             @open="handleOpen"
                             background-color="#545c64"
@@ -91,7 +91,6 @@
     data() {
       return {
         isCollapse: false,
-        activeIndex: '1',
         dialogVisible: false,
         activeIndex2: '1'
       }

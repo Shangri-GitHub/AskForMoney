@@ -1,5 +1,12 @@
 <template>
-    <div>
+    <div class="login">
+        <div class="videoBox">
+            <video autoplay="" loop="" muted="" poster="http://7xw7ee.com1.z0.glb.clouddn.com/video-2.jpg">
+                <source src="http://7xw7ee.com1.z0.glb.clouddn.com/video-2.webm" type="video/webm">
+                <source src="http://7xw7ee.com1.z0.glb.clouddn.com/video-2.mp4" type="video/mp4">
+                <source src="http://7xw7ee.com1.z0.glb.clouddn.com/video-2.ogg" type="video/ogg">
+            </video>
+        </div>
         <div class="login">
             <el-form label-width="100px" class="demo-ruleForm">
                 <el-form-item label="账号">
@@ -34,25 +41,39 @@
   }
 </script>
 
-<style scoped="">
+<style scoped>
+    .login .videoBox {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        overflow: hidden
+    }
+
+    .login video {
+        width: 100%;
+        height: auto;
+    }
+
     /*居中1*/
-    .login {
+    .login .login {
         width: 400px;
         height: 100px;
         position: absolute;
         top: 50%;
         left: 50%;
-        margin: -100px 0  0 -200px;
+        margin: -100px 0 0 -200px;
     }
+
     /*居中2*/
     /*.login {*/
-        /*width: 400px;*/
-        /*height: 100px;*/
-        /*position: absolute;*/
-        /*margin: auto;*/
-        /*top: 0;*/
-        /*left: 0;*/
-        /*right: 0;*/
-        /*bottom: 0;*/
+    /*width: 400px;*/
+    /*height: 100px;*/
+    /*position: absolute;*/
+    /*margin: auto;*/
+    /*top: 0;*/
+    /*left: 0;*/
+    /*right: 0;*/
+    /*bottom: 0;*/
     /*}*/
+
 </style>

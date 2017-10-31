@@ -47,6 +47,7 @@
                 <div class="grid-content bg-purple"></div>
             </el-col>
         </el-row>
+        <div id="showDetail"></div>
     </div>
 </template>
 
@@ -58,7 +59,7 @@
         active: 0,
         loading: false,
         QueryLoading: false,
-        input: '26,12,33,54,06,02,03',
+        input: '05,08,17,18,23,04,12',
         historyDaletouData: ''
       }
     },
@@ -82,10 +83,15 @@
         /**
          * 检查与历史有没有重复的代码
          */
+        for (var i = 0; i < this.historyDaletouData.length; i++) {
 
-        console.log(this.input.split(","))
-
-
+          if (this.input.split(",").toString() == this.historyDaletouData[i].periodsArr.toString()) {
+            $('#showDetail').html("本次投注与第" + this.historyDaletouData[i].periods + "期,开奖号码：" + this.historyDaletouData[i].periodsArr + "投注一致").css("color", "red");
+            return this.historyDaletouData[i].periods
+          } else {
+            $('#showDetail').html("没有发现与历史投注相同的数字").css("color", "green");
+          }
+        }
 //
 //          var TicketByDay = $('#TicketByDay').val().split(",");
 //          CheckTicket(TicketByDay);
@@ -102,6 +108,7 @@
 //            }
 //          }
 //        }
+
 
       }
     },
@@ -2516,25 +2523,25 @@
        * 每次查从17126期向后查找
        */
 
-      for (var i = 0; i < $('#tdata tr').length; i++) {
-        var item = {
-          "periods": $('#tdata tr').eq(i).find("td:first").html(),
-          "periodsArr": [
-            $('#tdata tr').eq(i).find("td:nth-of-type(2)").html(),
-            $('#tdata tr').eq(i).find("td:nth-of-type(3)").html(),
-            $('#tdata tr').eq(i).find("td:nth-of-type(4)").html(),
-            $('#tdata tr').eq(i).find("td:nth-of-type(5)").html(),
-            $('#tdata tr').eq(i).find("td:nth-of-type(6)").html(),
-            $('#tdata tr').eq(i).find("td:nth-of-type(7)").html(),
-            $('#tdata tr').eq(i).find("td:nth-of-type(8)").html()
-          ]
-        };
-        /**
-         * 双色球用   push
-         * 大乐透用  unshift
-         */
-        historyData.unshift(item)
-      }
+//      for (var i = 0; i < $('#tdata tr').length; i++) {
+//        var item = {
+//          "periods": $('#tdata tr').eq(i).find("td:first").html(),
+//          "periodsArr": [
+//            $('#tdata tr').eq(i).find("td:nth-of-type(2)").html(),
+//            $('#tdata tr').eq(i).find("td:nth-of-type(3)").html(),
+//            $('#tdata tr').eq(i).find("td:nth-of-type(4)").html(),
+//            $('#tdata tr').eq(i).find("td:nth-of-type(5)").html(),
+//            $('#tdata tr').eq(i).find("td:nth-of-type(6)").html(),
+//            $('#tdata tr').eq(i).find("td:nth-of-type(7)").html(),
+//            $('#tdata tr').eq(i).find("td:nth-of-type(8)").html()
+//          ]
+//        };
+//        /**
+//         * 双色球用   push
+//         * 大乐透用  unshift
+//         */
+//        historyData.unshift(item)
+//      }
 //      console.log(historyData);
     }
   }
