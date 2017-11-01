@@ -8,16 +8,17 @@
                 background-color="#545c64"
                 text-color="#fff"
                 active-text-color="#ffd04b">
-            <el-menu-item index="-1" ><a style="margin-left: 132px" v-model="isCollapse" @click="isCollapse=!isCollapse"><i class="el-icon-tickets"></i></a></el-menu-item>
+            <el-menu-item index="-1"><a style="margin-left: 132px" v-model="isCollapse" @click="isCollapse=!isCollapse"><i
+                    class="el-icon-tickets"></i></a></el-menu-item>
             <el-menu-item index="0" @click="goto3D()"><a>3D福彩</a></el-menu-item>
-            <el-menu-item index="1">
-                <a @click="gotoShuang()">双色球</a>
+            <el-menu-item index="1" @click="gotoShuang()">
+                <a>双色球</a>
             </el-menu-item>
-            <el-menu-item index="2">
-                <a @click="gotoDaletou()">超级大乐透</a>
+            <el-menu-item index="2" @click="gotoDaletou()">
+                <a>超级大乐透</a>
             </el-menu-item>
-            <el-menu-item index="3" style="float: right">
-                <a @click="dialogVisible = true">退出</a>
+            <el-menu-item index="3" style="float: right" @click="dialogVisible = true">
+                <a>退出</a>
             </el-menu-item>
         </el-menu>
 
@@ -68,13 +69,11 @@
                 </div>
             </el-col>
         </el-row>
-
-        <!--推出框-->
+        <!--弹出框-->
         <el-dialog
                 title="提示"
                 :visible.sync="dialogVisible"
-                width="30%"
-        >
+                width="30%">
             <span>确认退出吗？</span>
             <span slot="footer" class="dialog-footer">
           <el-button @click="dialogVisible = false">取 消</el-button>
@@ -124,7 +123,8 @@
         width: 200px;
         min-height: 700px;
     }
-    .el-menu--collapse{
+
+    .el-menu--collapse {
         min-height: 700px;
     }
 </style>
