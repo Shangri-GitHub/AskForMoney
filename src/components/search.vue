@@ -2515,7 +2515,6 @@
         "periodsArr": ["15", "22", "31", "34", "35", "05", "12"]
       }, {"periods": "07001", "periodsArr": ["22", "24", "29", "31", "35", "04", "11"]}];
 
-      console.log(this.historyDaletouData);
 
       /**
        * periods  期数

@@ -92,15 +92,13 @@
       return {
         isCollapse: false,
         dialogVisible: false,
-        activeIndex2: '1'
+        activeIndex2: '0'
       }
     },
     methods: {
       handleSelect(key, keyPath) {
-        console.log(key, keyPath);
       },
       handleOpen(key, keyPath) {
-        console.log(key, keyPath);
       },
       goto3D() {
         this.$router.push("/nav/queryPage1")
@@ -116,7 +114,7 @@
       }
     },
     mounted: function () {
-      this.$router.push("/nav/queryPage2")
+      this.$router.push("/nav/queryPage1")
     }
   }
 </script>
