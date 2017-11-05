@@ -41,38 +41,40 @@
     methods: {
       submitForm() {
 
-
-        this.$router.push("/nav")
-
         // 调用接口
         var params = {
-          account: this.account,
-          password: this.password,
-          url: 'Login'
+          userName: this.login.account,
+          password: this.login.password,
+//          url: '/api/v1/luckuser/login'
         }
+//        $.ajax({
+//          type: 'POST',
+//          url: "http://localhost:9999/lottery/api/v1/luckuser/login",
+//          contentType:"application/json",
+//          data: JSON.stringify(params),
+//          contentType: 'application/x-www-form-urlencoded;charset=UTF-8',
+//          success: function (data) {
+//            console.log(data);
+//          },
+//          error:function (err) {
+//            console.log(err);
+//          }
+//        });
 
 
         // 调用接口
-
-        /*
-
-           this.$http.post(params.url, {
-                  'loginCode': params.loginCode,
-                  'passWord': params.passWord
-                }).then(function (res) {
-                  console.log(res);
-                  if (res.data.success) {
-                    that.$router.push({path: 'nav'})
-                    localStorage.clear('powerList');
-                    localStorage.setItem('powerList', JSON.stringify(res.data.data))
-                  } else {
-                    that.$message.error(res.data.errMsg);
-                  }
-                })
-
-                */
-
-
+        var that = this;
+        this.$http.post(params.url, {
+          'userName': params.account,
+          'password': params.password
+        }).then(function (res) {
+          that.$router.push({path: 'nav'})
+//          localStorage.clear('powerList');
+//          localStorage.setItem('powerList', JSON.stringify(res.data.data))
+        }).catch(function (err) {
+          console.log(err);
+//          that.$message.error(err);
+        });
       },
 
     }
