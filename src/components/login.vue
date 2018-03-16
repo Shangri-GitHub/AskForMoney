@@ -9,7 +9,7 @@
         </div>
         <div class="login">
             <el-form label-width="100px" class="demo-ruleForm">
-                <el-form-item label="账号">
+                <el-form-item class="text-white" label="账号">
                     <el-input v-model="login.account" type="text" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="密码">
@@ -41,40 +41,57 @@
     methods: {
       submitForm() {
 
+        this.$router.push({path: 'nav'})
         // 调用接口
         var params = {
           userName: this.login.account,
           password: this.login.password,
 //          url: '/api/v1/luckuser/login'
         }
+        $.ajax({
+          type: 'POST',
+          url: "http://localhost:9999/lottery/api/v1/luckuser/login",
+          contentType:'application/json',
+          data: JSON.stringify(params),
+          success: function (data) {
+            console.log(data);
+          },
+          error:function (err) {
+            console.log(err);
+          }
+        });
+
+
 //        $.ajax({
 //          type: 'POST',
-//          url: "http://localhost:9999/lottery/api/v1/luckuser/login",
-//          contentType:"application/json",
-//          data: JSON.stringify(params),
-//          contentType: 'application/x-www-form-urlencoded;charset=UTF-8',
-//          success: function (data) {
-//            console.log(data);
+//          url: 'http://localhost:9999/lottery/api/v1/luckuser/login',
+//          contentType:'application/json',
+//          data:JSON.stringify({
+//            "userName": '1',
+//            "password": "null"
+//          }),
+//          success: function(res) {
+//            console.log(res)
 //          },
-//          error:function (err) {
-//            console.log(err);
+//          error:function(res) {
+//            console.log( JSON.parse(res.responseText).message)
 //          }
 //        });
 
 
         // 调用接口
-        var that = this;
-        this.$http.post(params.url, {
-          'userName': params.account,
-          'password': params.password
-        }).then(function (res) {
-          that.$router.push({path: 'nav'})
-//          localStorage.clear('powerList');
-//          localStorage.setItem('powerList', JSON.stringify(res.data.data))
-        }).catch(function (err) {
-          console.log(err);
-//          that.$message.error(err);
-        });
+//        var that = this;
+//        this.$http.post(params.url, {
+//          'userName': params.userName,
+//          'password': params.password
+//        }).then(function (res) {
+//          that.$router.push({path: 'nav'})
+////          localStorage.clear('powerList');
+////          localStorage.setItem('powerList', JSON.stringify(res.data.data))
+//        }).catch(function (err) {
+//          console.log(err);
+////          that.$message.error(err);
+//        });
       },
 
     }
@@ -117,5 +134,8 @@
     /*bottom: 0;*/
     /*}*/
 
+   .el-form-item__label{
+        color: white;
+    }
 
 </style>

@@ -9,6 +9,9 @@ import VueRouter from 'vue-router'
 import routes from './router'
 
 
+
+
+
 Vue.use(ElementUI)
 Vue.use(VueRouter)
 
@@ -32,3 +35,4 @@ new Vue({
   el: '#app',
   render: h => h(App)
 })
+
