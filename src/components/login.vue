@@ -41,42 +41,34 @@
     methods: {
       submitForm() {
 
-        this.$router.push({path: 'nav'})
+        var that = this;
+
+
         // 调用接口
         var params = {
           userName: this.login.account,
           password: this.login.password,
-//          url: '/api/v1/luckuser/login'
         }
+
         $.ajax({
           type: 'POST',
-          url: "http://localhost:9999/lottery/api/v1/luckuser/login",
-          contentType:'application/json',
-          data: JSON.stringify(params),
-          success: function (data) {
-            console.log(data);
+          url: "http://localhost:8080/login",
+          data: {
+            "userName": params.userName,
+            "password": params.password
           },
-          error:function (err) {
+          dataType: "json",
+          success: function (data) {
+            if (data.result == "1") {
+              that.$router.push({path: 'nav'})
+            } else {
+              alert("账号密码不能为空！");
+            }
+          },
+          error: function (err) {
             console.log(err);
           }
         });
-
-
-//        $.ajax({
-//          type: 'POST',
-//          url: 'http://localhost:9999/lottery/api/v1/luckuser/login',
-//          contentType:'application/json',
-//          data:JSON.stringify({
-//            "userName": '1',
-//            "password": "null"
-//          }),
-//          success: function(res) {
-//            console.log(res)
-//          },
-//          error:function(res) {
-//            console.log( JSON.parse(res.responseText).message)
-//          }
-//        });
 
 
         // 调用接口
@@ -134,7 +126,7 @@
     /*bottom: 0;*/
     /*}*/
 
-   .el-form-item__label{
+    .el-form-item__label {
         color: white;
     }
 
