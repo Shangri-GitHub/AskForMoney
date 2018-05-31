@@ -8,7 +8,7 @@
                 background-color="#545c64"
                 text-color="#fff"
                 active-text-color="#ffd04b">
-            <el-menu-item index="-1"><a style="margin-left: 132px" v-model="isCollapse" @click="isCollapse=!isCollapse"><i
+            <el-menu-item index="-1"><a style="margin-left: 132px" v-model="isCollapse" @click="collapse()"><i
                     class="el-icon-tickets"></i></a></el-menu-item>
             <el-menu-item index="0" @click="goto3D()"><a>3D福彩</a></el-menu-item>
             <el-menu-item index="1" @click="gotoShuang()">
@@ -23,7 +23,8 @@
         </el-menu>
 
         <el-row>
-            <el-col :span="4">
+            <el-col :span="left">
+
                 <div class="grid-content bg-purple">
                     <el-menu
                             :collapse="isCollapse"
@@ -48,7 +49,7 @@
                             </el-menu-item-group>
                             <el-submenu index="1-4">
                                 <template slot="title">选项4</template>
-                                <el-menu-item index="1-4-1">选项1</el-menu-item>
+                                <el-menu-item index="1-4-1" @click="goRomantic()">恋爱计时器</el-menu-item>
                             </el-submenu>
                         </el-submenu>
                         <el-menu-item index="2">
@@ -62,8 +63,9 @@
                     </el-menu>
                 </div>
             </el-col>
-            <el-col :span="20">
-                <div class="grid-content bg-purple-light">
+            <el-col :span="right">
+
+                <div class="grid-content bg-purple-light"  :class="isCollapse?'bg-changeLeft-flag':'bg-changeRight-flag'" >
                     <router-view>
                     </router-view>
                 </div>
@@ -89,12 +91,19 @@
     name: '',
     data() {
       return {
+        left: 4,
+        right: 20,
         isCollapse: false,
         dialogVisible: false,
         activeIndex2: '0'
       }
     },
     methods: {
+      collapse(){
+        this.isCollapse = !this.isCollapse;
+        this.left = this.isCollapse ? 1 : 3;
+        this.right = this.isCollapse ? 23 : 21;
+      },
       handleSelect(key, keyPath) {
       },
       handleOpen(key, keyPath) {
@@ -107,6 +116,9 @@
       },
       gotoDaletou() {
         this.$router.push("/nav/queryPage3")
+      },
+      goRomantic(){
+        this.$router.push("/nav/romantic_page")
       },
       logout() {
         this.$router.push("/")
@@ -127,4 +139,14 @@
     .el-menu--collapse {
         min-height: 700px;
     }
+
+    .bg-changeLeft-flag {
+        margin-left: 6px;
+    }
+
+    .bg-changeRight-flag {
+        margin-left: 30px;
+    }
+
+
 </style>

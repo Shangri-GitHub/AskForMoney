@@ -42,7 +42,7 @@
       submitForm() {
 
         var that = this;
-
+        that.$router.push({path: 'nav'})
 
         // 调用接口
         var params = {
@@ -50,40 +50,28 @@
           password: this.login.password,
         }
 
-        $.ajax({
-          type: 'POST',
-          url: "http://localhost:8080/login",
-          data: {
-            "userName": params.userName,
-            "password": params.password
-          },
-          dataType: "json",
-          success: function (data) {
-            if (data.result == "1") {
-              that.$router.push({path: 'nav'})
-            } else {
-              alert("账号密码不能为空！");
-            }
-          },
-          error: function (err) {
-            console.log(err);
-          }
-        });
-
-
-        // 调用接口
-//        var that = this;
-//        this.$http.post(params.url, {
-//          'userName': params.userName,
-//          'password': params.password
-//        }).then(function (res) {
-//          that.$router.push({path: 'nav'})
-////          localStorage.clear('powerList');
-////          localStorage.setItem('powerList', JSON.stringify(res.data.data))
-//        }).catch(function (err) {
-//          console.log(err);
-////          that.$message.error(err);
+//        $.ajax({
+//          type: 'POST',
+//          url: "http://localhost:8080/login",
+//          data: {
+//            "userName": params.userName,
+//            "password": params.password
+//          },
+//          dataType: "json",
+//          success: function (data) {
+//            if (data.result == "1") {
+//              that.$router.push({path: 'nav'})
+//            } else {
+//              alert("账号密码不能为空！");
+//            }
+//          },
+//          error: function (err) {
+//            console.log(err);
+//          }
 //        });
+
+
+
       },
 
     }

@@ -5,6 +5,7 @@ import search from "./components/search.vue";
 import queryPage1 from "./components/QueryPage1.vue";
 import queryPage2 from "./components/QueryPage2.vue";
 import queryPage3 from "./components/QueryPage3.vue";
+import romantic_page from "./components/romantic_page.vue";
 
 // 配置路由
 export default [
@@ -32,6 +33,10 @@ export default [
         name:'search',
         path: '/nav/search',
         component: search
+      },
+      {
+        path: '/nav/romantic_page',
+        component: romantic_page
       }
     ]
   }
