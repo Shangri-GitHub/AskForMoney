@@ -10,16 +10,20 @@
                 active-text-color="#ffd04b">
             <el-menu-item index="-1"><a style="margin-left: 132px" v-model="isCollapse" @click="collapse()"><i
                     class="el-icon-tickets"></i></a></el-menu-item>
-            <el-menu-item index="0" @click="goto3D()"><a>3D福彩</a></el-menu-item>
-            <el-menu-item index="1" @click="gotoShuang()">
+            <el-menu-item index="/nav/queryPage1"><a>3D福彩</a></el-menu-item>
+            <el-menu-item index="/nav/queryPage2">
                 <a>双色球</a>
             </el-menu-item>
-            <el-menu-item index="2" @click="gotoDaletou()">
+            <el-menu-item index="/nav/queryPage3">
                 <a>超级大乐透</a>
             </el-menu-item>
-            <el-menu-item index="3" style="float: right" @click="dialogVisible = true">
+            <el-menu-item index="/nav/wiki_page">
+                <a>Wiki学习资料</a>
+            </el-menu-item>
+            <el-menu-item index="/nav/logout" style="float: right" @click="dialogVisible = true">
                 <a>退出</a>
             </el-menu-item>
+
         </el-menu>
 
         <el-row>
@@ -27,6 +31,7 @@
 
                 <div class="grid-content bg-purple">
                     <el-menu
+                            @select="handleSelect"
                             :collapse="isCollapse"
                             default-active="1-1"
                             class="el-menu-vertical-demo"
@@ -49,7 +54,7 @@
                             </el-menu-item-group>
                             <el-submenu index="1-4">
                                 <template slot="title">选项4</template>
-                                <el-menu-item index="1-4-1" @click="goRomantic()">恋爱计时器</el-menu-item>
+                                <el-menu-item index="/nav/romantic_page">恋爱计时器</el-menu-item>
                             </el-submenu>
                         </el-submenu>
                         <el-menu-item index="2">
@@ -65,7 +70,8 @@
             </el-col>
             <el-col :span="right">
 
-                <div class="grid-content bg-purple-light"  :class="isCollapse?'bg-changeLeft-flag':'bg-changeRight-flag'" >
+                <div class="grid-content bg-purple-light"
+                     :class="isCollapse?'bg-changeLeft-flag':'bg-changeRight-flag'">
                     <router-view>
                     </router-view>
                 </div>
@@ -105,21 +111,14 @@
         this.right = this.isCollapse ? 23 : 21;
       },
       handleSelect(key, keyPath) {
+        if (key.indexOf("/nav") > -1) {
+          this.$router.push(key)
+        }
       },
       handleOpen(key, keyPath) {
+        console.log(key)
       },
-      goto3D() {
-        this.$router.push("/nav/queryPage1")
-      },
-      gotoShuang() {
-        this.$router.push("/nav/queryPage2")
-      },
-      gotoDaletou() {
-        this.$router.push("/nav/queryPage3")
-      },
-      goRomantic(){
-        this.$router.push("/nav/romantic_page")
-      },
+
       logout() {
         this.$router.push("/")
       }
