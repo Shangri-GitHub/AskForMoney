@@ -7,6 +7,8 @@ import queryPage2 from "./components/QueryPage2.vue";
 import queryPage3 from "./components/QueryPage3.vue";
 import romantic_page from "./components/romantic_page.vue";
 import wiki_page from "./components/wiki_page.vue";
+import photowall from "./components/photowall.vue";
+
 
 // 配置路由
 export default [
@@ -42,7 +44,12 @@ export default [
       {
         path: '/nav/wiki_page',
         component: wiki_page
+      },
+      {
+        path: '/nav/photowall',
+        component: photowall
       }
+
     ]
   }
 ]

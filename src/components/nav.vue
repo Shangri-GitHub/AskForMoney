@@ -55,6 +55,7 @@
                             <el-submenu index="1-4">
                                 <template slot="title">选项4</template>
                                 <el-menu-item index="/nav/romantic_page">恋爱计时器</el-menu-item>
+                                <el-menu-item index="/nav/photowall">照片墙</el-menu-item>
                             </el-submenu>
                         </el-submenu>
                         <el-menu-item index="2">

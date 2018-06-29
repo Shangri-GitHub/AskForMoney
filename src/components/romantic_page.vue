@@ -56,7 +56,6 @@
     .romantic_box {
         width: 100%;
         min-height: 700px;
-        /*-webkit-font-smoothing: antialiased;*/
         font-family: Helvetica Neue, Helvetica, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
         background-image: url('../assets/romantic_bg.jpg');
         font-size: 85%;
@@ -64,17 +63,14 @@
     }
 
     .content {
-        position: absolute;
         width: 100%;
-        top: 40%;
-        transform: translate(0, -50%);
-        text-align: center;
     }
 
     .timer {
-        font-size: 180%;
-        line-height: 1.5;
-        margin: 1em 0;
+        font-size: 30px;
+        position: absolute;
+        top: 50%;
+        left: 40%;
     }
 
     .timer b {
