@@ -20,10 +20,12 @@
             <el-menu-item index="/nav/wiki_page">
                 <a>Wiki学习资料</a>
             </el-menu-item>
+            <el-menu-item index="/nav/ResumeEdite">
+                <a>Mackdown编辑器</a>
+            </el-menu-item>
             <el-menu-item index="/nav/logout" style="float: right" @click="dialogVisible = true">
                 <a>退出</a>
             </el-menu-item>
-
         </el-menu>
 
         <el-row>
