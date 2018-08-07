@@ -1,0 +1,204 @@
+<template>
+    <div>
+        <el-row style="margin-top: 20px">
+            <el-form :model="form" label-width="80px">
+                <el-col :span="5">
+                    <el-form-item label="订单号">
+                        <el-input v-model="form.name"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="10">
+                    <el-form-item label="创建时间">
+                        <el-col :span="11">
+                            <el-date-picker type="date" placeholder="选择日期" v-model="form.date1"
+                                            style="width: 100%;"></el-date-picker>
+                        </el-col>
+                        <el-col class="line" style="text-align: center" :span="2">-</el-col>
+                        <el-col :span="11">
+                            <el-time-picker type="fixed-time" placeholder="选择时间" v-model="form.date2"
+                                            style="width: 100%;"></el-time-picker>
+                        </el-col>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="5">
+                    <el-form-item label="姓名">
+                        <el-input v-model="form.name"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="3" :push="1">
+                    <el-button type="primary" @click="Query()">查 询</el-button>
+                </el-col>
+
+            </el-form>
+        </el-row>
+        <!--表格-->
+
+
+        <div>
+            <template>
+                <el-table
+                        :data="tableData"
+                        style="width: 100%">
+                    <el-table-column
+                            prop="orderId"
+                            label="订单号"
+                            sortable>
+                    </el-table-column>
+                    <el-table-column
+                            prop="buyerName"
+                            label="姓名">
+                    </el-table-column>
+                    <el-table-column
+                            prop="buyerPhone"
+                            label="手机号">
+                    </el-table-column>
+                    <el-table-column
+                            prop="buyerAddress"
+                            label="地址"
+                            width="180">
+                    </el-table-column>
+                    <el-table-column
+                            prop="orderAmount"
+                            label="金额(元)">
+                    </el-table-column>
+                    <el-table-column
+                            prop="orderStatus"
+                            label="订单状态"
+                            :formatter="orderStatusFormatter">
+                    </el-table-column>
+                    <el-table-column
+                            prop="payStatus"
+                            label="支付状态"
+                            :formatter="payStatusFormatter">
+                    </el-table-column>
+                    <el-table-column
+                            prop="createTime"
+                            label="创建时间">
+                    </el-table-column>
+                    <el-table-column
+                            prop="tag"
+                            label="操作"
+                            width="160">
+                        <template slot-scope="scope">
+                            <el-button
+                                    size="mini"
+                                    type="primary"
+                                    plain
+                                    @click="handleEdit(scope.$index, scope.row)">详情
+                            </el-button>
+                            <el-button
+                                    v-if="scope.row.orderStatus == '0'"
+                                    size="mini"
+                                    @click="handleCancel(scope.row.orderId)">取消
+                            </el-button>
+                        </template>
+                    </el-table-column>
+
+                </el-table>
+
+            </template>
+            <div style="margin-top: 10px">
+                <el-pagination
+                        @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"
+                        :current-page=currentPage
+                        :page-sizes="[5, 10, 15, 20]"
+                        layout="total,sizes, ->, prev, pager,next, jumper"
+                        :page-size=pageSize
+                        :total=total>
+                </el-pagination>
+
+
+            </div>
+
+        </div>
+
+    </div>
+</template>
+
+<script>
+  export default {
+    name: '',
+    data() {
+      return {
+        form: {
+          name: '',
+        },
+        tableData: [],
+        total: 0,
+        currentPage: 1,
+        pageSize: 5 //每页默认几条数据
+      }
+    },
+    methods: {
+      orderStatusFormatter(row, column) {
+        var orderStatusEnum = {
+          0: "新下单",
+          1: "完成订单",
+          2: "取消订单"
+        }
+        return orderStatusEnum[row.orderStatus];
+      },
+      payStatusFormatter(row) {
+        var payStatusEnum = {
+          0: "未支付",
+          1: "支付成功"
+        }
+        return payStatusEnum[row.payStatus];
+      },
+      handleSizeChange(pageSize) {
+        this.getTableList(this.currentPage, pageSize);
+      },
+      handleCurrentChange(currentPage) {
+        this.getTableList(currentPage, this.pageSize);
+      },
+      handleCancel(orderId){
+        /**
+         *  取消订单
+         */
+        var that = this;
+        this.$confirm('确定要取消该订单, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          that.$http.post('seller/order/cancel', {
+            "orderId": orderId
+          }).then(function (res) {
+            that.getTableList(that.currentPage, that.pageSize);
+            that.$message({
+              type: 'success',
+              message: '取消'+res.data.msg+'!'
+            });
+          })
+        })
+      }
+    },
+    mounted: function () {
+      // 接收参数
+      console.log('userId: ' + this.$route.params.userId);
+      var that = this;
+      /**
+       * 获取表格的列表
+       */
+      that.getTableList = function (currentPage, pageSize) {
+        that.$http.post('seller/order/list', {
+          page: currentPage,
+          size: pageSize
+        }).then(function (res) {
+          that.tableData = res.data.data.data;
+          that.total = res.data.data.total;
+        })
+      }
+      that.getTableList(that.currentPage, that.pageSize)
+
+    }
+  }
+</script>
+
+<style>
+    .popper {
+        margin-left: 10%;
+    }
+
+</style>

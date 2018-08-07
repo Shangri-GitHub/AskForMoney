@@ -9,21 +9,12 @@ import VueRouter from 'vue-router'
 import routes from './router'
 
 
-
-
-
 Vue.use(ElementUI)
 Vue.use(VueRouter)
 
-
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';           //配置请求头
-axios.defaults.baseURL = 'http://localhost:9999/lottery';
-//设置携带session，解决跨域
-axios.defaults.withCredentials = true;
-
+// axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
+axios.defaults.baseURL = 'http://localhost:8080/sell/';
 Vue.prototype.$http = axios;
-
-
 const router = new VueRouter({
   // mode: 'history',
   mode: 'hash',    //路由的模式

@@ -9,6 +9,7 @@ import romantic_page from "./components/romantic_page.vue";
 import wiki_page from "./components/wiki_page.vue";
 import photowall from "./components/photowall.vue";
 import ResumeEdite from "./components/ResumeEdite.vue";
+import order from "./components/order.vue";
 
 // 配置路由
 export default [
@@ -52,6 +53,10 @@ export default [
       {
         path: '/nav/ResumeEdite',
         component: ResumeEdite
+      },
+      {
+        path: '/nav/order',
+        component: order
       }
 
     ]
