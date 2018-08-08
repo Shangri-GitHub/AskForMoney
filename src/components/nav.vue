@@ -21,7 +21,7 @@
                 <a>Wiki学习资料</a>
             </el-menu-item>
             <el-menu-item index="/nav/ResumeEdite">
-                <a>Mackdown编辑器</a>
+                <a>Markdown编辑器</a>
             </el-menu-item>
             <el-menu-item index="" style="float: right" @click="dialogVisible = true">
                 <a>退出</a>
@@ -51,7 +51,7 @@
                                 <span>商品</span>
                             </template>
                             <el-menu-item-group>
-                                <el-menu-item index="1-1">订单</el-menu-item>
+                                <el-menu-item index="/nav/productList">列表</el-menu-item>
                                 <el-menu-item index="1-2">商品</el-menu-item>
                             </el-menu-item-group>
                             <el-menu-item-group title="分组2">
