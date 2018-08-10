@@ -52,26 +52,21 @@
                             </template>
                             <el-menu-item-group>
                                 <el-menu-item index="/nav/productList">列表</el-menu-item>
-                                <el-menu-item index="1-2">商品</el-menu-item>
-                            </el-menu-item-group>
-                            <el-menu-item-group title="分组2">
-                                <el-menu-item index="1-3">选项3</el-menu-item>
                             </el-menu-item-group>
                             <el-submenu index="1-4">
-                                <template slot="title">选项4</template>
+                                <template slot="title">小彩蛋</template>
                                 <el-menu-item index="/nav/romantic_page">恋爱计时器</el-menu-item>
                                 <el-menu-item index="/nav/photowall">照片墙</el-menu-item>
                             </el-submenu>
                         </el-submenu>
-                        <el-menu-item index="3">
+                        <el-menu-item index="/nav/category">
                             <i class="el-icon-setting"></i>
-                            <span slot="title">导航三</span>
+                            <span slot="title">类目</span>
                         </el-menu-item>
                     </el-menu>
                 </div>
             </el-col>
             <el-col :span="right">
-
                 <div class="grid-content bg-purple-light"
                      :class="isCollapse?'bg-changeLeft-flag':'bg-changeRight-flag'">
                     <router-view>

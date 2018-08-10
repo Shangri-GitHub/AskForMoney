@@ -18,24 +18,11 @@
                 border
                 stripe
                 style="width: 100%">
-            <el-table-column label="商品Id" prop="productId"></el-table-column>
-            <el-table-column label="名称" prop="productName"></el-table-column>
-            <el-table-column label="商品图片" width="80" align="center">
-                <template slot-scope="scope">
-                    <img :src="scope.row.productIcon" width="50px" height="50px">
-                </template>
-            </el-table-column>
-            <el-table-column label="单价" prop="productPrice"></el-table-column>
-            <el-table-column label="库存" prop="productStock"></el-table-column>
-            <el-table-column label="描述" prop="productDescription" width="180"></el-table-column>
-            <el-table-column label="类目">
-                <template slot-scope="scope">
-                    <span>{{categoryObj[scope.row.categoryType].categoryName}}</span>
-                </template>
-            </el-table-column>
+            <el-table-column label="类目Id" prop="categoryId"></el-table-column>
+            <el-table-column label="名字" prop="categoryName"></el-table-column>
+            <el-table-column label="类型" prop="categoryType"></el-table-column>
             <el-table-column label="创建时间" prop="createTime"></el-table-column>
             <el-table-column label="修改时间" prop="updateTime"></el-table-column>
-            <el-table-column label="0 上架；1下架" prop="productStatus"></el-table-column>
             <el-table-column label="操作" width="180">
                 <template slot-scope="scope">
                     <el-button
@@ -80,12 +67,8 @@
                     <el-col :span="12">
                         <el-form-item label="类目">
                             <el-select v-model="formData.categoryType" placeholder="请选择类目" prop="categoryType">
-                                <el-option
-                                        v-for="item in options"
-                                        :key="item.categoryId"
-                                        :label="item.categoryName"
-                                        :value="item.categoryType">
-                                </el-option>
+                                <el-option label="区域一" value="1"></el-option>
+                                <el-option label="区域二" value="2"></el-option>
                             </el-select>
                         </el-form-item>
                     </el-col>
@@ -104,13 +87,8 @@
                     </el-col>
                 </el-row>
                 <el-row :span="24">
-                    <el-form-item label="上架状态">
-                        <el-switch inactive-text="下架..."
-                                   active-text="上架..."
-                                   :inactive-value=1
-                                   :active-value=0
-                                   v-model="formData.productStatus">
-                        </el-switch>
+                    <el-form-item label="上架/下架">
+                        <el-switch v-model="formData.productStatus"></el-switch>
                     </el-form-item>
                 </el-row>
                 <el-row :span="24">
@@ -167,15 +145,13 @@
         num1: 1,
         formData: {},
         fileList: [],
-        options: [],
-        categoryObj: {},
         rules: {
           productName: [
             {required: true, message: '请输入商品名称', trigger: 'blur'},
             {min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur'}
           ],
           productPrice: [
-            {required: true, validator: checkAge, trigger: 'blur'},
+            {required: true,validator: checkAge, trigger: 'blur'},
           ],
           fileList: [
             {type: 'array', required: false, message: '请选择一张图片', trigger: 'change'}
@@ -255,7 +231,7 @@
        * 获取表格的列表
        */
       that.getTableList = function (currentPage, pageSize) {
-        that.$http.post('seller/product/list', {
+        that.$http.post('seller/category/list', {
           page: currentPage,
           size: pageSize
         }).then(function (res) {
@@ -264,15 +240,6 @@
         })
       }
       that.getTableList(that.currentPage, that.pageSize);
-      /**
-       * 获取下拉框的数据
-       */
-      that.$http.post('seller/category/findAll').then(function (res) {
-        that.options = res.data.data;
-        that.options.forEach(function (ele) {
-          that.categoryObj[ele.categoryType] = ele;
-        })
-      })
     }
   }
 </script>

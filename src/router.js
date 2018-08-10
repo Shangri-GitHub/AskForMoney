@@ -11,6 +11,7 @@ import photowall from "./components/photowall.vue";
 import ResumeEdite from "./components/ResumeEdite.vue";
 import order from "./components/order.vue";
 import productList from "./components/ProductList.vue";
+import category from "./components/category.vue";
 
 // 配置路由
 export default [
@@ -62,7 +63,12 @@ export default [
       {
         path: '/nav/productList',
         component: productList
+      },
+      {
+        path: '/nav/category',
+        component: category
       }
+
     ]
   }
 ]
