@@ -193,10 +193,27 @@
         gridData: [],
         orderStatus: 0,
         payStatus: "",
-        webSocket:{}
+        webSocket: {}
       }
     },
     methods: {
+      Query(){
+        var that = this;
+        that.$http.post('buyer/order/create', {
+          name: "张先生",
+          phone: "15992344221",
+          address: "陕西西安",
+          openId: "110110",
+          items: [{
+            productId: "1",
+            productQuantity: 1
+          }],
+        }).then(function (res) {
+          console.log(res)
+        })
+
+
+      },
       orderStatusFormatter(row, column) {
         var orderStatusEnum = {
           0: "新下单",
@@ -302,14 +319,7 @@
         })
       }
       that.getTableList(that.currentPage, that.pageSize)
-    },
-    created() {
-      this.webSocket = this.$utils.initWebSocket();
-      console.log(this.webSocket)
-    },
-    destroyed() {
-      this.webSocket.close() //离开路由之后断开websocket连接
-    },
+    }
 
   }
 

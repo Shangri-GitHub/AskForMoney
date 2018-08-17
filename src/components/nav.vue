@@ -23,11 +23,42 @@
             <el-menu-item index="/nav/ResumeEdite">
                 <a>Markdown编辑器</a>
             </el-menu-item>
+
             <el-menu-item index="" style="float: right" @click="dialogVisible = true">
                 <a>退出</a>
             </el-menu-item>
-        </el-menu>
 
+            <el-menu-item index="1" style="float: right">
+                <el-popover
+                        placement="bottom"
+                        title="新订单列表"
+                        width="220"
+                        trigger="click"
+                        style="height: 200px;overflow: auto"
+                        v-model="visible">
+                    <div style="height: 250px;overflow:auto;">
+                        <div v-for="list in noticeContent">
+                            <div style="padding:6px 0;display: flex;align-items: center">
+                                <div style="flex-direction: column;padding-left: 10px">
+                                    <div style="display: flex">
+                                        <div style="width: 160px">姓名:{{list.buyerName}}</div>
+                                        <div style="padding-left: 10px;color: red;font-size: 16px">¥{{list.orderAmount}}</div>
+                                    </div>
+                                    <div style="color: #436180">地址:{{list.buyerAddress}}</div>
+                                    <time class="time">{{list.updateTime}}</time>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div slot="reference" @click="visible = !visible;noticeHandle()">
+                        <el-badge :value=noticeValue :max=99>
+                            <i style="color:#ffffff;font-size: 20px;" class="el-icon-bell"> </i>
+                        </el-badge>
+                    </div>
+                </el-popover>
+            </el-menu-item>
+        </el-menu>
         <el-row>
             <el-col :span="left">
 
@@ -85,7 +116,9 @@
           <el-button type="primary" @click="dialogVisible = false;logout()">确 定</el-button>
           </span>
         </el-dialog>
-
+        <audio id="noticeAudio" preload="auto">
+            <source src="../../src/assets/music/song.mp3" type="audio/mpeg">
+        </audio>
     </div>
 </template>
 
@@ -98,10 +131,23 @@
         right: 20,
         isCollapse: false,
         dialogVisible: false,
-        activeIndex2: '0'
+        visible: false,
+        activeIndex2: '0',
+        noticeValue: "new",
+        noticeContent: "",
       }
     },
     methods: {
+      noticeHandle(){
+        var that = this;
+        that.$http.post('seller/order/list', {
+          page: 1,
+          size: 100
+        }).then(function (res) {
+          that.noticeValue = res.data.data.total;
+          that.noticeContent = res.data.data.data;
+        })
+      },
       collapse(){
         this.isCollapse = !this.isCollapse;
         this.left = this.isCollapse ? 1 : 3;
@@ -119,22 +165,59 @@
 
       logout() {
         var that = this;
-        that.$http.post('seller/logout', {}).then(function (res) {
-          that.$router.push("/")
-        })
 
+        that.$router.push("/")
 
-
-
+//        that.$http.post('seller/logout', {}).then(function (res) {
+//          that.$router.push("/")
+//        })
       }
     },
     mounted: function () {
+      /**
+       * webSocket 接收消息右上角提示
+       * 音乐自动播放
+       * @param event
+       */
+      var that = this;
+
+      this.webSocket.onmessage = function (event) {
+        console.log('收到消息:' + event.data)
+        that.noticeValue = "NEW";
+        $("#noticeAudio")[0].play();
+        that.$notify({
+          title: '您有一条新订单',
+          message: that.$createElement('p', {style: 'color: teal'}, '订单号:' + event.data),
+          type: 'success',
+          iconClass: "el-icon-news",
+          duration: 3000
+        });
+
+      }
+
       this.$router.push("/nav/queryPage1")
-    }
+    },
+    created() {
+      this.webSocket = this.$utils.initWebSocket();
+    },
+    destroyed() {
+      this.webSocket.close() //离开路由之后断开websocket连接
+    },
   }
 </script>
 
 <style>
+
+    .el-badge__content.is-fixed {
+        top: 19px;
+        right: 16px;
+    }
+
+    .time {
+        font-size: 12px;
+        color: #999;
+    }
+
     .el-menu-vertical-demo:not(.el-menu--collapse) {
         width: 200px;
         min-height: 700px;
