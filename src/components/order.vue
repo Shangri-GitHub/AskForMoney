@@ -174,6 +174,7 @@
 </template>
 
 <script>
+
   export default {
     name: '',
     data() {
@@ -192,6 +193,7 @@
         gridData: [],
         orderStatus: 0,
         payStatus: "",
+        webSocket:{}
       }
     },
     methods: {
@@ -300,9 +302,17 @@
         })
       }
       that.getTableList(that.currentPage, that.pageSize)
+    },
+    created() {
+      this.webSocket = this.$utils.initWebSocket();
+      console.log(this.webSocket)
+    },
+    destroyed() {
+      this.webSocket.close() //离开路由之后断开websocket连接
+    },
 
-    }
   }
+
 </script>
 
 <style>

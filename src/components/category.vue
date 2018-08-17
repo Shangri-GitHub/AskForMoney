@@ -27,19 +27,13 @@
                 <template slot-scope="scope">
                     <el-button
                             size="mini"
+                            type="info"
                             @click="dialogFormVisible = true;handleEdit(scope.row)">修改
                     </el-button>
                     <el-button
-                            v-if="scope.row.productStatus==0"
                             size="mini"
                             type="danger"
-                            @click="handleSale(scope.row.productStatus,scope.row.productId)">下架
-                    </el-button>
-                    <el-button
-                            v-if="scope.row.productStatus==1"
-                            size="mini"
-                            type="primary"
-                            @click="handleSale(scope.row.productStatus,scope.row.productId)">上架
+                            @click="handleSale(scope.row.productStatus,scope.row.productId)">删除
                     </el-button>
                 </template>
             </el-table-column>
@@ -56,64 +50,22 @@
             </el-pagination>
         </div>
         <!--修改商品的弹出框-->
-        <el-dialog title="修改商品" :visible.sync="dialogFormVisible">
+        <el-dialog title="修改类目" :visible.sync="dialogFormVisible">
             <el-form ref="formData" :model="formData" :rules="rules" label-width="80px" size="mini">
                 <el-row :span="24">
                     <el-col :span="12">
-                        <el-form-item label="商品名称" prop="productName">
-                            <el-input v-model="formData.productName"></el-input>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="12">
-                        <el-form-item label="类目">
-                            <el-select v-model="formData.categoryType" placeholder="请选择类目" prop="categoryType">
-                                <el-option label="区域一" value="1"></el-option>
-                                <el-option label="区域二" value="2"></el-option>
-                            </el-select>
+                        <el-form-item label="类目名称" prop="categoryName">
+                            <el-input v-model="formData.categoryName"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row :span="24">
                     <el-col :span="12">
-                        <el-form-item label="单价" prop="productPrice">
-                            <el-input type="number" v-model="formData.productPrice"></el-input>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="12">
-                        <el-form-item label="库存">
-                            <el-input-number v-model.number="formData.productStock" :min="0" :max="1000"
-                                             label="描述文字"></el-input-number>
+                        <el-form-item label="类目类型" prop="categoryType">
+                            <el-input type="number" v-model.number="formData.categoryType"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
-                <el-row :span="24">
-                    <el-form-item label="上架/下架">
-                        <el-switch v-model="formData.productStatus"></el-switch>
-                    </el-form-item>
-                </el-row>
-                <el-row :span="24">
-                    <el-col :span="12">
-                        <el-form-item label="图片" prop="fileList">
-                            <el-upload
-                                    action="https://jsonplaceholder.typicode.com/posts/"
-                                    :on-change="handleImageChange"
-                                    list-type="picture"
-                                    :limit=1
-                                    :file-list="fileList">
-                                <el-button size="mini" type="primary">点击上传</el-button>
-                                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-                            </el-upload>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-
-                <el-row :span="24">
-                    <el-form-item label="描述">
-                        <el-input type="textarea" v-model="formData.productDescription"></el-input>
-                    </el-form-item>
-                </el-row>
-
-
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button size="small" type="primary" @click="saveProductInfo('formData')">确 定
@@ -130,7 +82,7 @@
     data() {
       var checkAge = (rule, value, callback) => {
         if (value == "") {
-          return callback(new Error('商品单价不能为空'));
+          return callback(new Error('请输入类目类型'));
         }
         if (value < 0) {
           return callback(new Error('商品单价不能是负数'));
@@ -146,16 +98,13 @@
         formData: {},
         fileList: [],
         rules: {
-          productName: [
-            {required: true, message: '请输入商品名称', trigger: 'blur'},
+          categoryName: [
+            {required: true, message: '请输入类目名称', trigger: 'blur'},
             {min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur'}
           ],
-          productPrice: [
+          categoryType: [
             {required: true,validator: checkAge, trigger: 'blur'},
-          ],
-          fileList: [
-            {type: 'array', required: false, message: '请选择一张图片', trigger: 'change'}
-          ],
+          ]
         }
       }
     },
@@ -168,14 +117,16 @@
         var that = this;
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            that.$http.post('seller/product/save', this.formData).then(function (res) {
+            that.$http.post('seller/category/save', this.formData).then(function (res) {
               if (res.data.code == 0) {
                 that.getTableList(that.currentPage, that.pageSize);
                 that.dialogFormVisible = false;
                 that.$message({
                   type: 'success',
-                  message: '修改商品成功' + res.data.msg + '!'
+                  message: '修改类目成功' + res.data.msg + '!'
                 });
+              }else {
+                that.$message.error(res.data.msg);
               }
             })
           } else {

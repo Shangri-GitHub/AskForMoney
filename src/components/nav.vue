@@ -118,7 +118,14 @@
       },
 
       logout() {
-        this.$router.push("/")
+        var that = this;
+        that.$http.post('seller/logout', {}).then(function (res) {
+          that.$router.push("/")
+        })
+
+
+
+
       }
     },
     mounted: function () {

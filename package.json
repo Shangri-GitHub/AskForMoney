@@ -13,7 +13,8 @@
     "marked": "^0.4.0",
     "mavon-editor": "^2.6.9",
     "test-467527309": "^1.0.0",
-    "vue": "^2.5.2"
+    "vue": "^2.5.2",
+    "vue-websocket": "^0.2.2"
   },
   "engines": {
     "node": ">=6"
