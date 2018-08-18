@@ -165,9 +165,7 @@
 
       logout() {
         var that = this;
-
         that.$router.push("/")
-
 //        that.$http.post('seller/logout', {}).then(function (res) {
 //          that.$router.push("/")
 //        })
@@ -180,7 +178,6 @@
        * @param event
        */
       var that = this;
-
       this.webSocket.onmessage = function (event) {
         console.log('收到消息:' + event.data)
         that.noticeValue = "NEW";
@@ -192,13 +189,11 @@
           iconClass: "el-icon-news",
           duration: 3000
         });
-
       }
-
-      this.$router.push("/nav/queryPage1")
+//      this.$router.push("/nav/queryPage1")
     },
     created() {
-      this.webSocket = this.$utils.initWebSocket();
+      this.webSocket = this.$WebSocket();
     },
     destroyed() {
       this.webSocket.close() //离开路由之后断开websocket连接

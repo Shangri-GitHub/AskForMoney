@@ -211,8 +211,6 @@
         }).then(function (res) {
           console.log(res)
         })
-
-
       },
       orderStatusFormatter(row, column) {
         var orderStatusEnum = {
