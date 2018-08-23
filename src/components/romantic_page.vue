@@ -1,9 +1,7 @@
 <template>
     <div class="romantic_box">
-        <div class="content">
-            <div class="timer">
-                <b v-html="d"></b> Days <b v-text="h"></b> Hours <b>{{m}}</b> Minutes <b v-html="s"></b> Seconds
-            </div>
+        <div class="timer">
+            <b v-html="d"></b> Days <b v-text="h"></b> Hours <b>{{m}}</b> Minutes <b v-html="s"></b> Seconds
         </div>
     </div>
 </template>
@@ -55,7 +53,7 @@
 <style scoped>
     .romantic_box {
         width: 100%;
-        min-height: 700px;
+        height: 700px;
         font-family: Helvetica Neue, Helvetica, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
         background-image: url('../assets/romantic_bg.jpg');
         font-size: 85%;
@@ -63,7 +61,7 @@
     }
 
     .content {
-        width: 100%;
+        /*width: 100%;*/
     }
 
     .timer {

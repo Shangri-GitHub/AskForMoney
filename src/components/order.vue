@@ -199,7 +199,7 @@
     methods: {
       Query(){
         var that = this;
-        that.$http.post('buyer/order/create', {
+        that.$http.post('buyer/goods/create', {
           name: "张先生",
           phone: "15992344221",
           address: "陕西西安",
@@ -246,7 +246,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          that.$http.post('seller/order/cancel', {
+          that.$http.post('seller/goods/cancel', {
             "orderId": orderId
           }).then(function (res) {
             that.dialogTableVisible = false;
@@ -260,7 +260,7 @@
       },
       handleEdit(orderId){
         var that = this;
-        this.$http.post('seller/order/detail', {
+        this.$http.post('seller/goods/detail', {
           "orderId": orderId
         }).then(function (res) {
           that.orderStatus = res.data.orderStatus;
@@ -272,7 +272,7 @@
       },
       orderFinish(orderId){
         var that = this;
-        this.$http.post('seller/order/finish', {
+        this.$http.post('seller/goods/finish', {
           "orderId": orderId
         }).then(function (res) {
           that.dialogTableVisible = false;
@@ -287,7 +287,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          that.$http.post('seller/order/delete', {
+          that.$http.post('seller/goods/delete', {
             "orderId": orderId
           }).then(function (res) {
             that.dialogTableVisible = false;
@@ -308,7 +308,7 @@
        * 获取表格的列表
        */
       that.getTableList = function (currentPage, pageSize) {
-        that.$http.post('seller/order/list', {
+        that.$http.post('seller/goods/list', {
           page: currentPage,
           size: pageSize
         }).then(function (res) {
