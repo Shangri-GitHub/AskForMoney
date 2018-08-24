@@ -6,6 +6,7 @@ import App from './App.vue'
 import VueRouter from 'vue-router'
 import routes from './router'
 import utils from './utils/Utils'
+import echarts from 'echarts'
 
 
 Vue.use(ElementUI)
@@ -13,6 +14,7 @@ Vue.use(VueRouter)
 
 Vue.prototype.$http = utils.httpInit();
 Vue.prototype.$WebSocket = utils.webSocketInit;
+Vue.prototype.$echarts = echarts;
 const router = new VueRouter({
   // mode: 'history',
   mode: 'hash',    //路由的模式

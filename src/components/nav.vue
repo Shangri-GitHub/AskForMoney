@@ -225,7 +225,7 @@
 
     .el-menu--collapse {
         align-self: stretch;
-        /*min-height: 700px;*/
+        min-height: 700px;
     }
 
     .bg-changeLeft-flag {
