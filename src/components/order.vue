@@ -199,7 +199,7 @@
     methods: {
       Query(){
         var that = this;
-        that.$http.post('buyer/goods/create', {
+        that.$http.post('buyer/order/create', {
           name: "张先生",
           phone: "15992344221",
           address: "陕西西安",
