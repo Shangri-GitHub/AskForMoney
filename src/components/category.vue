@@ -33,7 +33,7 @@
                     <el-button
                             size="mini"
                             type="danger"
-                            @click="handleSale(scope.row.productStatus,scope.row.productId)">删除
+                            @click="handleSale(scope.row.categoryId)">删除
                     </el-button>
                 </template>
             </el-table-column>
@@ -146,20 +146,20 @@
           url: formData.productIcon
         }]
       },
-      handleSale(productStatus, productId) {
+      handleSale(categoryId) {
         var that = this;
-        this.$confirm('确定要' + (productStatus == 1 ? "上架" : "下架") + '该商品?', '提示', {
+        this.$confirm('确定要删除此类目吗？', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
         }).then(() => {
-          that.$http.post('seller/product/' + (productStatus == 1 ? "on_sale" : "off_sale"), {
-            "productId": productId
+          that.$http.post('seller/category/deleteByCategoryId', {
+            "categoryId": categoryId
           }).then(function (res) {
             that.dialogTableVisible = false;
             that.getTableList(that.currentPage, that.pageSize);
             that.$message({
               type: 'success',
-              message: '商品' + (productStatus == 1 ? "上架" : "下架") + res.data.msg + '!'
+              message: '类目'  + res.data.msg + '!'
             });
           })
         });
