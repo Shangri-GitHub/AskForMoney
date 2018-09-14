@@ -1,6 +1,4 @@
 <template>
-
-
     <div style="margin-top: 20px">
         <el-row :span="24" style="padding-bottom: 10px">
             <el-col :span="3" :push="21">
@@ -117,13 +115,16 @@
                     <el-col :span="12">
                         <el-form-item label="图片" prop="fileList">
                             <el-upload
-                                    action="https://jsonplaceholder.typicode.com/posts/"
-                                    :on-change="handleImageChange"
+                                    action="http://upload-z0.qiniu.com"
                                     list-type="picture"
-                                    :limit=1
+                                    :limit=5
+                                    :data="uptoken"
+                                    :before-upload="beforeAvatarUpload"
+                                    :on-remove="handleRemoveChange"
+                                    :on-success="handleSuccessChange"
                                     :file-list="fileList">
                                 <el-button size="mini" type="primary">点击上传</el-button>
-                                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过2M</div>
                             </el-upload>
                         </el-form-item>
                     </el-col>
@@ -148,6 +149,7 @@
 </template>
 
 <script>
+  import Config from '../config'
   export default {
     data() {
       var checkAge = (rule, value, callback) => {
@@ -169,10 +171,14 @@
         fileList: [],
         options: [],
         categoryObj: {},
+        uptoken: {
+          token: '',
+          key: ""
+        },
         rules: {
           productName: [
             {required: true, message: '请输入商品名称', trigger: 'blur'},
-            {min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur'}
+            {min: 1, max: 50, message: '长度在 1 到 20 个字符', trigger: 'blur'}
           ],
           productPrice: [
             {required: true, validator: checkAge, trigger: 'blur'},
@@ -184,7 +190,12 @@
       }
     },
     methods: {
+      submitUpload() {
+        this.$refs.upload.submit();
+      },
       createProductInfo(){
+        // 调用七牛云获取uptoken
+        this.getUptoken();
         this.formData = {};
         this.dialogFormVisible = true;
       },
@@ -208,10 +219,43 @@
           }
         });
       },
-      handleImageChange(e){
-        console.log(e)
+      beforeAvatarUpload(file) {
+        this.uptoken.key = file.name;
+        const isJPG = (file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/gif');
+        const isLt2M = file.size / 1024 / 1024 < 2;
+        if (!isJPG) {
+          this.$message.error('上传头像图片只能是 JPG 格式!');
+        }
+        if (!isLt2M) {
+          this.$message.error('上传头像图片大小不能超过 2MB!');
+        }
+        return isJPG && isLt2M;
+      },
+      handleRemoveChange(file, fileList){
+        var filelists = [];
+        fileList.forEach(function (elem) {
+          var item = {
+            name: elem.name,
+            url: Config.qiniu.action + elem.name
+          }
+          filelists.push(item);
+        })
+        this.fileList = filelists;
+      },
+      handleSuccessChange(response, file, fileList) { //上传成功后在图片框显示图片
+        var filelists = [];
+        fileList.forEach(function (elem) {
+          var item = {
+            name: elem.name,
+            url: Config.qiniu.action + elem.name
+          }
+          filelists.push(item);
+        })
+        this.fileList = filelists;
       },
       handleEdit(formData) {
+        // 调用七牛云获取uptoken
+        this.getUptoken();
         // 深拷贝解决单项传递问题
         this.formData = JSON.parse(JSON.stringify(formData));
         this.fileList = [{
@@ -251,6 +295,14 @@
     mounted: function () {
       // 接收参数
       var that = this;
+      /**
+       * 获取七牛云token
+       */
+      that.getUptoken = function () {
+        that.$http.get("qiniu/getUpToken").then(function (res) {
+          that.uptoken.token = res.data.data.upToken;
+        })
+      }
       /**
        * 获取表格的列表
        */

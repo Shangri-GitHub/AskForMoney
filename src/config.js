@@ -7,5 +7,8 @@ export default{
   },
   api:{
     BASEURL:"http://localhost:8080/sell/"
+  },
+  qiniu:{
+    action:"http://hx.syslijian.com/"  //上传的地址
   }
 }
