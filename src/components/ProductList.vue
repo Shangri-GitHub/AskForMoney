@@ -20,7 +20,7 @@
             <el-table-column label="名称" prop="productName"></el-table-column>
             <el-table-column label="商品图片" width="80" align="center">
                 <template slot-scope="scope">
-                    <img :src="scope.row.productIcon" width="50px" height="50px">
+                    <img :src="scope.row.smallmodelPhoto.url" width="50px" height="50px">
                 </template>
             </el-table-column>
             <el-table-column label="单价" prop="productPrice"></el-table-column>
@@ -33,7 +33,11 @@
             </el-table-column>
             <el-table-column label="创建时间" prop="createTime"></el-table-column>
             <el-table-column label="修改时间" prop="updateTime"></el-table-column>
-            <el-table-column label="0 上架；1下架" prop="productStatus"></el-table-column>
+            <el-table-column label="上架状态" prop="productStatus">
+                <template slot-scope="scope">
+                    <span>{{scope.row.productStatus==0?"上架中":"已下架"}}</span>
+                </template>
+            </el-table-column>
             <el-table-column label="操作" width="180">
                 <template slot-scope="scope">
                     <el-button
@@ -76,8 +80,8 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item label="类目">
-                            <el-select v-model="formData.categoryType" placeholder="请选择类目" prop="categoryType">
+                        <el-form-item label="类目" prop="categoryType">
+                            <el-select v-model="formData.categoryType" placeholder="请选择类目">
                                 <el-option
                                         v-for="item in options"
                                         :key="item.categoryId"
@@ -102,6 +106,13 @@
                     </el-col>
                 </el-row>
                 <el-row :span="24">
+                    <el-col :span="12">
+                        <el-form-item label="打折优惠">
+                            <el-input v-model="formData.productRate"></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row :span="24">
                     <el-form-item label="上架状态">
                         <el-switch inactive-text="下架..."
                                    active-text="上架..."
@@ -113,18 +124,55 @@
                 </el-row>
                 <el-row :span="24">
                     <el-col :span="12">
-                        <el-form-item label="图片" prop="fileList">
+                        <el-form-item label="缩略图" prop="smallModelPhoto">
                             <el-upload
                                     action="http://upload-z0.qiniu.com"
                                     list-type="picture"
-                                    :limit=5
+                                    :limit=1
                                     :data="uptoken"
                                     :before-upload="beforeAvatarUpload"
                                     :on-remove="handleRemoveChange"
                                     :on-success="handleSuccessChange"
-                                    :file-list="fileList">
+                                    :file-list="formData.smallModelPhoto">
                                 <el-button size="mini" type="primary">点击上传</el-button>
-                                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过2M</div>
+                                <div slot="tip" class="el-upload__tip">只能上传jpg/png/gif文件，且不超过10M</div>
+                            </el-upload>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row :span="24">
+                    <el-col :span="12">
+                        <el-form-item label="大图" prop="superModelPhoto">
+                            <el-upload
+                                    action="http://upload-z0.qiniu.com"
+                                    list-type="picture"
+                                    :limit=3
+                                    :data="uptoken"
+                                    :before-upload="beforeAvatarUpload"
+                                    :on-remove="handleRemoveChange1"
+                                    :on-success="handleSuccessChange1"
+                                    :file-list="formData.superModelPhoto">
+                                <el-button size="mini" type="primary">点击上传</el-button>
+                                <div slot="tip" class="el-upload__tip">只能上传jpg/png/gif文件，且不超过10M</div>
+                            </el-upload>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+
+                <el-row :span="24">
+                    <el-col :span="12">
+                        <el-form-item label="商品详图" prop="detailphoto">
+                            <el-upload
+                                    action="http://upload-z0.qiniu.com"
+                                    list-type="picture"
+                                    :limit=9
+                                    :data="uptoken"
+                                    :before-upload="beforeAvatarUpload"
+                                    :on-remove="handleRemoveChange2"
+                                    :on-success="handleSuccessChange2"
+                                    :file-list="formData.detailPhoto">
+                                <el-button size="mini" type="primary">点击上传</el-button>
+                                <div slot="tip" class="el-upload__tip">只能上传jpg/png/gif文件，且不超过10M</div>
                             </el-upload>
                         </el-form-item>
                     </el-col>
@@ -160,6 +208,21 @@
           return callback(new Error('商品单价不能是负数'));
         }
       };
+      var categoryTypeCheck = (rule, value, callback) => {
+        if(value == "" || value == null){
+          return callback(new Error('请选择类目'));
+        }
+      }
+      var smallModelPhoto = (rule, value, callback) => {
+        if(value == "" || value == null){
+          return callback(new Error('请上传至少一张图片'));
+        }
+      }
+      var superModelPhoto = (rule, value, callback) => {
+        if(value == "" || value == null){
+          return callback(new Error('请上传至少一张图片'));
+        }
+      }
       return {
         total: 0,
         pageSize: 10,
@@ -167,8 +230,11 @@
         tableData: [],
         dialogFormVisible: false,
         num1: 1,
-        formData: {},
-        fileList: [],
+        formData: {
+          smallModelPhoto: [],
+          superModelPhoto: [],
+          detailPhoto: []
+        },
         options: [],
         categoryObj: {},
         uptoken: {
@@ -183,16 +249,19 @@
           productPrice: [
             {required: true, validator: checkAge, trigger: 'blur'},
           ],
-          fileList: [
-            {type: 'array', required: false, message: '请选择一张图片', trigger: 'change'}
+          categoryType: [
+            {required: true, validator: categoryTypeCheck, trigger: 'blur'}
+          ],
+          smallModelPhoto: [
+            {required: true, validator: smallModelPhoto, trigger: 'blur'}
+          ],
+          superModelPhoto: [
+            {required: true, validator: superModelPhoto, trigger: 'blur'}
           ],
         }
       }
     },
     methods: {
-      submitUpload() {
-        this.$refs.upload.submit();
-      },
       createProductInfo(){
         // 调用七牛云获取uptoken
         this.getUptoken();
@@ -222,14 +291,58 @@
       beforeAvatarUpload(file) {
         this.uptoken.key = file.name;
         const isJPG = (file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/gif');
-        const isLt2M = file.size / 1024 / 1024 < 2;
+        const isLt2M = file.size < 10 * 1024 * 1024;
         if (!isJPG) {
           this.$message.error('上传头像图片只能是 JPG 格式!');
         }
         if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!');
+          this.$message.error('上传头像图片大小不能超过 10MB!');
         }
         return isJPG && isLt2M;
+      },
+      handleRemoveChange2(file, fileList){
+        var filelists = [];
+        fileList.forEach(function (elem) {
+          var item = {
+            name: elem.name,
+            url: Config.qiniu.action + elem.name
+          }
+          filelists.push(item);
+        })
+        this.formData.detailPhoto = filelists;
+      },
+      handleSuccessChange2(response, file, fileList) { //上传成功后在图片框显示图片
+        var filelists = [];
+        fileList.forEach(function (elem) {
+          var item = {
+            name: elem.name,
+            url: Config.qiniu.action + elem.name
+          }
+          filelists.push(item);
+        })
+        this.formData.detailPhoto = filelists;
+      },
+      handleRemoveChange1(file, fileList){
+        var filelists = [];
+        fileList.forEach(function (elem) {
+          var item = {
+            name: elem.name,
+            url: Config.qiniu.action + elem.name
+          }
+          filelists.push(item);
+        })
+        this.formData.superModelPhoto = filelists;
+      },
+      handleSuccessChange1(response, file, fileList) { //上传成功后在图片框显示图片
+        var filelists = [];
+        fileList.forEach(function (elem) {
+          var item = {
+            name: elem.name,
+            url: Config.qiniu.action + elem.name
+          }
+          filelists.push(item);
+        })
+        this.formData.superModelPhoto = filelists;
       },
       handleRemoveChange(file, fileList){
         var filelists = [];
@@ -240,7 +353,8 @@
           }
           filelists.push(item);
         })
-        this.fileList = filelists;
+
+        this.formData.smallModelPhoto = filelists;
       },
       handleSuccessChange(response, file, fileList) { //上传成功后在图片框显示图片
         var filelists = [];
@@ -251,17 +365,20 @@
           }
           filelists.push(item);
         })
-        this.fileList = filelists;
+        this.formData.smallModelPhoto = filelists;
       },
-      handleEdit(formData) {
+      handleEdit(formData) { debugger
         // 调用七牛云获取uptoken
         this.getUptoken();
         // 深拷贝解决单项传递问题
         this.formData = JSON.parse(JSON.stringify(formData));
-        this.fileList = [{
-          name: "food.jpeg",
-          url: formData.productIcon
-        }]
+        // todo 读取存储成功过的图片
+        console.log(formData)
+
+//        this.fileList = [{
+//          name: "food.jpeg",
+//          url: formData.productIcon
+//        }]
       },
       handleSale(productStatus, productId) {
         var that = this;
