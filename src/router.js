@@ -23,6 +23,7 @@ export default [
   {
     path: '/nav',
     component: nav,
+    redirect:'/nav/order',
     children: [
       {
         path: '/nav/queryPage1',
