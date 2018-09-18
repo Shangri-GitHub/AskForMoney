@@ -94,7 +94,7 @@
                 </el-row>
                 <el-row :span="24">
                     <el-col :span="12">
-                        <el-form-item label="单价" prop="productPrice">
+                        <el-form-item label="单价" prop="">
                             <el-input type="number" v-model="formData.productPrice"></el-input>
                         </el-form-item>
                     </el-col>
