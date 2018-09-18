@@ -111,6 +111,41 @@
                             <el-input v-model="formData.productRate"></el-input>
                         </el-form-item>
                     </el-col>
+                    <el-col :span="12">
+                        <span style="padding-left: 20px">(原价为1，0.88即为八八折)</span>
+                    </el-col>
+                </el-row>
+
+
+                <el-row :span="24">
+                    <el-form-item label="尺码">
+                        <el-checkbox-group v-model="size">
+                            <el-checkbox label="S" name="S"></el-checkbox>
+                            <el-checkbox label="M" name="M"></el-checkbox>
+                            <el-checkbox label="L" name="L"></el-checkbox>
+                            <el-checkbox label="XL" name="XL"></el-checkbox>
+                            <el-checkbox label="XXL" name="XXL"></el-checkbox>
+                        </el-checkbox-group>
+                    </el-form-item>
+                </el-row>
+                <el-row :span="24">
+                    <el-form-item label="颜色">
+                        <el-select
+                                class="color-select"
+                                v-model="color"
+                                multiple
+                                filterable
+                                allow-create
+                                default-first-option
+                                placeholder="请选择颜色">
+                            <el-option
+                                    v-for="item in colors"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
                 </el-row>
                 <el-row :span="24">
                     <el-form-item label="上架状态">
@@ -203,14 +238,6 @@
   import Config from '../config'
   export default {
     data() {
-      var checkAge = (rule, value, callback) => {
-        if (value == "") {
-          return callback(new Error('商品单价不能为空'));
-        }
-        if (value < 0) {
-          return callback(new Error('商品单价不能是负数'));
-        }
-      };
       var categoryTypeCheck = (rule, value, callback) => {
         if (value == "" || value == null) {
           return callback(new Error('请选择类目'));
@@ -233,12 +260,21 @@
         tableData: [],
         dialogFormVisible: false,
         accept: "image/jpeg,image/gif,image/png,image/bmp",
-        title:"添加商品",
+        title: "添加商品",
+        size: ['S', 'M', 'L', 'XL'],
+        color: ['白色', '黑色'],
         formData: {
           smallModelPhoto: [],
           superModelPhoto: [],
-          detailPhoto: []
+          detailPhoto: [],
         },
+        colors: [{
+          value: '白色',
+          label: '白色'
+        }, {
+          value: '黑色',
+          label: '黑色'
+        }],
         options: [],
         categoryObj: {},
         uptoken: {
@@ -250,11 +286,11 @@
             {required: true, message: '请输入商品名称', trigger: 'blur'},
             {min: 1, max: 50, message: '长度在 1 到 20 个字符', trigger: 'blur'}
           ],
-          productPrice: [
-            {required: true, validator: checkAge, trigger: 'blur'},
-          ],
           categoryType: [
             {required: true, validator: categoryTypeCheck, trigger: 'blur'}
+          ],
+          productPrice: [
+            {required: true, message: '请输入商品价格', trigger: 'blur'},
           ],
           smallModelPhoto: [
             {required: true, validator: smallModelPhoto, trigger: 'blur'}
@@ -282,8 +318,11 @@
       },
       saveProductInfo(formName){
         var that = this;
+
         this.$refs[formName].validate((valid) => {
           if (valid) {
+            this.formData.color = this.color;
+            this.formData.size = this.size;
             that.$http.post('seller/product/save', this.formData).then(function (res) {
               if (res.data.code == 0) {
                 that.getTableList(that.currentPage, that.pageSize);
@@ -441,6 +480,8 @@
   }
 </script>
 
-<style>
-
+<style scoped>
+    .color-select {
+        width: 90%;
+    }
 </style>
