@@ -3,12 +3,14 @@
  */
 export default{
   webSocket: {
-    URI: "ws://127.0.0.1:8080/sell/webSocket",
+    // URI: "ws://hanxing.store:8080/sell/webSocket",
+    URI: "ws://pc.hanxing.store/sell/webSocket",
   },
   api:{
-    BASEURL:"http://localhost:8080/sell/"
+    // BASEURL:"http://hanxing.store:8080/sell/",
+    BASEURL:"http://pc.hanxing.store/sell/"
   },
   qiniu:{
-    action:"https://qiniu.hanxing.store/"  //上传的地址
+    action:"https://qiniu.hanxing.store/",  //上传的地址
   }
 }
