@@ -205,7 +205,7 @@
           address: "陕西西安",
           openId: "110110",
           items: [{
-            productId: "1",
+            productId: "1537187140256142770",
             productQuantity: 1
           }],
         }).then(function (res) {
