@@ -9,6 +9,6 @@ export default{
     BASEURL:"http://localhost:8080/sell/"
   },
   qiniu:{
-    action:"http://hx.syslijian.com/"  //上传的地址
+    action:"https://qiniu.hanxing.store/"  //上传的地址
   }
 }
