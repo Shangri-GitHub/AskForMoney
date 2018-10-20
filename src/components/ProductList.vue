@@ -1,5 +1,38 @@
 <template>
     <div style="margin-top: 20px">
+
+        <el-row style="margin-top: 20px">
+            <el-form :model="form" label-width="80px">
+                <el-col :span="5">
+                    <el-form-item label="商品名称">
+                        <el-input v-model="form.name"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="10">
+                    <el-form-item label="创建时间">
+                        <el-col :span="11">
+                            <el-date-picker type="date" placeholder="选择日期" v-model="form.date1"
+                                            style="width: 100%;"></el-date-picker>
+                        </el-col>
+                        <el-col class="line" style="text-align: center" :span="2">-</el-col>
+                        <el-col :span="11">
+                            <el-time-picker type="fixed-time" placeholder="选择时间" v-model="form.date2"
+                                            style="width: 100%;"></el-time-picker>
+                        </el-col>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="5">
+                    <el-form-item label="类目">
+                        <el-input v-model="form.name"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="3" :push="1">
+                    <el-button type="primary" @click="Query()">查 询</el-button>
+                </el-col>
+
+            </el-form>
+        </el-row>
+
         <el-row :span="24" style="padding-bottom: 10px">
             <el-col :span="3" :push="21">
                 <el-button
@@ -38,7 +71,7 @@
                     <span>{{scope.row.productStatus == 0 ? "上架中" : "已下架"}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" width="180">
+            <el-table-column label="操作" width="220">
                 <template slot-scope="scope">
                     <el-button
                             size="mini"
@@ -47,7 +80,7 @@
                     <el-button
                             v-if="scope.row.productStatus==0"
                             size="mini"
-                            type="danger"
+                            type="warning"
                             @click="handleSale(scope.row.productStatus,scope.row.productId)">下架
                     </el-button>
                     <el-button
@@ -55,6 +88,11 @@
                             size="mini"
                             type="primary"
                             @click="handleSale(scope.row.productStatus,scope.row.productId)">上架
+                    </el-button>
+                    <el-button
+                            size="mini"
+                            type="danger"
+                            @click="deleteByProductId(scope.row.productId)">删除
                     </el-button>
                 </template>
             </el-table-column>
@@ -254,6 +292,9 @@
         }
       }
       return {
+        form: {
+          name: '',
+        },
         total: 0,
         pageSize: 10,
         currentPage: 1,
@@ -302,6 +343,39 @@
       }
     },
     methods: {
+      Query(){
+
+      },
+      deleteByProductId(productId){
+        var that = this;
+
+        this.$confirm('确认删除该商品, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          that.$http.post('seller/product/deleteByProductId', {
+            productId: productId
+          }).then(function (res) {
+            // 提示删除成功
+            if(res.data.code == 0){
+              that.$message({
+                type: 'success',
+                message: '删除成功!'
+              });
+              that.getTableList(that.currentPage, that.pageSize);
+            }
+            // 更新表格
+          })
+        });
+
+
+
+
+//        deleteByProductId
+
+      },
+
       createProductInfo(){
         // 调用七牛云获取uptoken
         this.getUptoken();
