@@ -5,25 +5,33 @@
             <el-form :model="form" label-width="80px">
                 <el-col :span="5">
                     <el-form-item label="商品名称">
-                        <el-input v-model="form.name"></el-input>
+                        <el-input v-model="form.productName"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="10">
                     <el-form-item label="创建时间">
                         <el-col :span="11">
-                            <el-date-picker type="date" placeholder="选择日期" v-model="form.date1"
+                            <el-date-picker type="date" placeholder="选择日期" v-model="form.startDate"
                                             style="width: 100%;"></el-date-picker>
                         </el-col>
                         <el-col class="line" style="text-align: center" :span="2">-</el-col>
                         <el-col :span="11">
-                            <el-time-picker type="fixed-time" placeholder="选择时间" v-model="form.date2"
-                                            style="width: 100%;"></el-time-picker>
+                            <el-date-picker type="date" placeholder="选择日期" v-model="form.endDate"
+                                            style="width: 100%;"></el-date-picker>
                         </el-col>
                     </el-form-item>
                 </el-col>
                 <el-col :span="5">
-                    <el-form-item label="类目">
-                        <el-input v-model="form.name"></el-input>
+                    <el-form-item label="类目" prop="categoryType">
+                        <el-select v-model="form.categoryType" placeholder="请选择类目">
+                            <el-option label="全部" value=""></el-option>
+                            <el-option
+                                    v-for="item in options"
+                                    :key="item.categoryId"
+                                    :label="item.categoryName"
+                                    :value="item.categoryType">
+                            </el-option>
+                        </el-select>
                     </el-form-item>
                 </el-col>
                 <el-col :span="3" :push="1">
@@ -293,7 +301,8 @@
       }
       return {
         form: {
-          name: '',
+          productName: '',
+          categoryType:'',
         },
         total: 0,
         pageSize: 10,
@@ -344,7 +353,7 @@
     },
     methods: {
       Query(){
-
+        this.getTableList(this.currentPage, this.pageSize);
       },
       deleteByProductId(productId){
         var that = this;
@@ -358,7 +367,7 @@
             productId: productId
           }).then(function (res) {
             // 提示删除成功
-            if(res.data.code == 0){
+            if (res.data.code == 0) {
               that.$message({
                 type: 'success',
                 message: '删除成功!'
@@ -368,8 +377,6 @@
             // 更新表格
           })
         });
-
-
 
 
 //        deleteByProductId
@@ -534,7 +541,11 @@
       that.getTableList = function (currentPage, pageSize) {
         that.$http.post('seller/product/list', {
           page: currentPage,
-          size: pageSize
+          size: pageSize,
+          productName: this.form.productName,
+          categoryType: this.form.categoryType,
+          startDate: this.form.startDate,
+          endDate: this.form.endDate,
         }).then(function (res) {
           that.tableData = res.data.data.data;
           that.total = res.data.data.total;
