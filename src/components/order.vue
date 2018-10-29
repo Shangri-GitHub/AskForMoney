@@ -122,7 +122,7 @@
                 <el-table-column type="index" label="序号"></el-table-column>
                 <el-table-column label="商品图片" width="80" align="center">
                     <template slot-scope="scope">
-                        <img :src="scope.row.productIcon" width="50px" height="50px">
+                        <img :src="scope.row.productIcon[0].url" width="50px" height="50px">
                     </template>
                 </el-table-column>
                 <el-table-column property="productName" label="商品名称"></el-table-column>
@@ -205,7 +205,7 @@
           address: "陕西西安",
           openId: "110110",
           items: [{
-            productId: "1537187140256142770",
+            productId: "1540629842505991790",
             productQuantity: 1
           }],
         }).then(function (res) {

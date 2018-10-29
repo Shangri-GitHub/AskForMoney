@@ -250,6 +250,7 @@
                                     list-type="picture"
                                     :accept="accept"
                                     :limit=9
+                                    :multiple = true
                                     :data="uptoken"
                                     :before-upload="beforeAvatarUpload"
                                     :on-remove="handleRemoveChange2"
