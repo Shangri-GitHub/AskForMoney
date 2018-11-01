@@ -163,7 +163,6 @@
         }
       },
       handleOpen(key, keyPath) {
-        console.log(key)
       },
 
       logout() {
