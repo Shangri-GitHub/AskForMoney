@@ -10,6 +10,7 @@ export default{
     BASEURL:"http://pc.hanxing.store/sell/",
   //   BASEURL:"http://4invxt.natappfree.cc/sell/"
   },
+  ALIPAYRETURNURL:"http://pc.hanxing.store/",
   qiniu:{
     action:"https://qiniu.hanxing.store/",  //上传的地址
   }
