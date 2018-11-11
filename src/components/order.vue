@@ -122,7 +122,7 @@
                 <el-table-column type="index" label="序号"></el-table-column>
                 <el-table-column label="商品图片" width="80" align="center">
                     <template slot-scope="scope">
-                        <img :src="scope.row.productIcon[0].url" width="50px" height="50px">
+                        <img :src="scope.row.smallModelPhoto[0].url" width="50px" height="50px">
                     </template>
                 </el-table-column>
                 <el-table-column property="productName" label="商品名称"></el-table-column>
@@ -149,7 +149,7 @@
                     <!--完成订单的时候或者等待支付的时候展示立即订单按钮、取消订单按钮-->
                     <div v-if="orderStatus == 1 && payStatus==2">
                         <el-button type="warning" size="small"
-                                   @click="orderPay(gridData[0].orderId)">立即支付
+                                   @click="orderPay()">立即支付
                         </el-button>
                         <el-button type="info" size="small"
                                    @click="handleCancel(gridData[0].orderId)">取消订单
@@ -175,6 +175,8 @@
 
 <script>
 
+  import config from '../config';
+
   export default {
     name: '',
     data() {
@@ -193,14 +195,23 @@
         gridData: [],
         orderStatus: 0,
         payStatus: "",
-        webSocket: {}
+        webSocket: {},
+        orderPayData: {},
       }
     },
     methods: {
+      orderPay(){
+        console.log(this.orderPayData.orderId)
+        // 支付宝网页支付
+        location.href = config.api.BASEURL + 'alipay/pay/trade_page?orderId=' + this.orderPayData.orderId +
+          '&returnUrl=http://127.0.0.1:8011/%23/nav/order';
+
+
+      },
       Query(){
         var that = this;
         that.$http.post('buyer/order/create', {
-          name: "张先生",
+          name: "宋先生",
           phone: "15992344221",
           address: "陕西西安",
           openId: "110110",
@@ -263,6 +274,7 @@
         this.$http.post('seller/goods/detail', {
           "orderId": orderId
         }).then(function (res) {
+          that.orderPayData = res.data;
           that.orderStatus = res.data.orderStatus;
           that.payStatus = res.data.payStatus;
           that.buyerInfo = res.data.buyerName + "-" + res.data.buyerPhone + "-" + res.data.buyerAddress;
