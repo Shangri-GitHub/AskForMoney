@@ -204,7 +204,7 @@
         console.log(this.orderPayData.orderId)
         // 支付宝网页支付
         location.href = config.api.BASEURL + 'alipay/pay/trade_page?orderId=' + this.orderPayData.orderId +
-          '&returnUrl='+config.api.ALIPAYRETURNURL+'/%23/nav/order';
+          '&returnUrl='+config.api.ALIPAYRETURNURL+'%23/nav/order';
 
 
       },
