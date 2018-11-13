@@ -3,11 +3,19 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const url = require('url')
 const publicPath = ''
+const PrerenderSPAPlugin = require('prerender-spa-plugin')
 
 module.exports = (options = {}) => ({
   entry: {
     vendor: './src/vendor',
     index: './src/main.js'
+  },
+  externals:{
+    'vue-router': 'VueRouter',
+    'vue': 'Vue',
+    'axios': 'axios',
+    'element-ui': 'ELEMENT',
+    'vuex': 'Vuex',
   },
   output: {
     path: resolve(__dirname, 'dist'),
@@ -51,7 +59,18 @@ module.exports = (options = {}) => ({
     }),
     new HtmlWebpackPlugin({
       template: 'src/index.html'
-    })
+    }),
+    // new PrerenderSPAPlugin({
+    //   staticDir: resolve(__dirname, 'dist'),
+    //   routes: [ '/', '/Contacts' ], // 需要预渲染的路由（视你的项目而定）
+    //   minify: {
+    //     collapseBooleanAttributes: true,
+    //     collapseWhitespace: true,
+    //     decodeEntities: true,
+    //     keepClosingSlash: true,
+    //     sortAttributes: true
+    //   }
+    // })
   ],
   resolve: {
     alias: {

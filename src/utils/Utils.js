@@ -3,8 +3,6 @@
  */
 
 import configs from '../config';
-import axios from 'axios';
-import ElementUI from 'element-ui';
 
 export default{
   httpInit(){

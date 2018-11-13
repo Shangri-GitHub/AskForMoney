@@ -1,12 +1,12 @@
 <template>
     <div class="login">
-        <!--<div class="videoBox">-->
-            <!--<video autoplay="" loop="" muted="" poster="http://7xw7ee.com1.z0.glb.clouddn.com/video-2.jpg">-->
-                <!--<source src="http://7xw7ee.com1.z0.glb.clouddn.com/video-2.webm" type="video/webm">-->
-                <!--<source src="http://7xw7ee.com1.z0.glb.clouddn.com/video-2.mp4" type="video/mp4">-->
-                <!--<source src="http://7xw7ee.com1.z0.glb.clouddn.com/video-2.ogg" type="video/ogg">-->
-            <!--</video>-->
-        <!--</div>-->
+        <div class="videoBox">
+            <video autoplay="" loop="" muted="" poster="http://7xw7ee.com1.z0.glb.clouddn.com/video-2.jpg">
+                <source src="http://7xw7ee.com1.z0.glb.clouddn.com/video-2.webm" type="video/webm">
+                <source src="http://7xw7ee.com1.z0.glb.clouddn.com/video-2.mp4" type="video/mp4">
+                <source src="http://7xw7ee.com1.z0.glb.clouddn.com/video-2.ogg" type="video/ogg">
+            </video>
+        </div>
         <div class="login">
             <el-form label-width="100px" class="demo-ruleForm">
                 <el-form-item class="text-white" label="账号">

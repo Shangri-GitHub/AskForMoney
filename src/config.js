@@ -7,13 +7,13 @@ export default{
     // URI: "ws://127.0.0.1:8080/sell/webSocket",
   },
   api:{
-    BASEURL:"http://pc.hanxing.store/sell/",
-    // BASEURL:"http://ua6wty.natappfree.cc/sell/"
+    // BASEURL:"http://pc.hanxing.store/sell/",
+    BASEURL:"http://127.0.0.1:8080/sell/"
   },
   ALIPAYRETURNURL:"http://pc.hanxing.store/",
 
 
   qiniu:{
-    action:"https://qiniu.hanxing.store/",  //上传的地址
+    action:"http://qiniu.hanxing.store/",  //上传的地址
   }
 }
