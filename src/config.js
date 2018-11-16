@@ -7,8 +7,8 @@ export default{
     // URI: "ws://127.0.0.1:8080/sell/webSocket",
   },
   api:{
-    // BASEURL:"http://pc.hanxing.store/sell/",
-    BASEURL:"http://127.0.0.1:8080/sell/"
+    BASEURL:"http://pc.hanxing.store/sell/",
+    // BASEURL:"http://127.0.0.1:8080/sell/"
   },
   ALIPAYRETURNURL:"http://pc.hanxing.store/",
 

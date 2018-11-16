@@ -1,11 +1,12 @@
 const resolve = require('path').resolve
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const CompressionWebpackPlugin = require('compression-webpack-plugin')
 const url = require('url')
 const publicPath = ''
-const PrerenderSPAPlugin = require('prerender-spa-plugin')
 
 module.exports = (options = {}) => ({
+
   entry: {
     vendor: './src/vendor',
     index: './src/main.js'
@@ -60,17 +61,20 @@ module.exports = (options = {}) => ({
     new HtmlWebpackPlugin({
       template: 'src/index.html'
     }),
-    // new PrerenderSPAPlugin({
-    //   staticDir: resolve(__dirname, 'dist'),
-    //   routes: [ '/', '/Contacts' ], // 需要预渲染的路由（视你的项目而定）
-    //   minify: {
-    //     collapseBooleanAttributes: true,
-    //     collapseWhitespace: true,
-    //     decodeEntities: true,
-    //     keepClosingSlash: true,
-    //     sortAttributes: true
-    //   }
-    // })
+
+    //gzip 压缩
+    new CompressionWebpackPlugin({
+      asset: '[path].gz[query]',   // 目标文件名
+      algorithm: 'gzip',   // 使用gzip压缩
+      test: new RegExp(
+        '\\.(js|css)$'    // 压缩 js 与 css
+      ),
+      threshold: 10240,   // 资源文件大于10240B=10kB时会被压缩
+      minRatio: 0.8  // 最小压缩比达到0.8时才会被压缩
+    }),
+
+
+
   ],
   resolve: {
     alias: {
@@ -94,5 +98,5 @@ module.exports = (options = {}) => ({
       index: url.parse(options.dev ? '/assets/' : publicPath).pathname
     }
   },
-  devtool: options.dev ? '#eval-source-map' : '#source-map'
+  devtool: options.dev ? '#eval-source-map' : false
 })

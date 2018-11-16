@@ -39,7 +39,7 @@
       }
     },
     methods: {
-      submitForm() {
+      submitForm() { debugger
 
         var that = this;
 

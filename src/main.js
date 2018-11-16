@@ -16,8 +16,8 @@ Vue.prototype.$http = utils.httpInit();
 Vue.prototype.$WebSocket = utils.webSocketInit;
 Vue.prototype.$echarts = echarts;
 const router = new VueRouter({
-  mode: 'history',
-  // mode: 'hash',    //路由的模式
+  // mode: 'history',
+  mode: 'hash',    //路由的模式
   routes
 })
 
@@ -26,3 +26,4 @@ new Vue({
   el: '#app',
   render: h => h(App)
 })
+
