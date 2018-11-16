@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CompressionWebpackPlugin = require('compression-webpack-plugin')
 const url = require('url')
 const publicPath = ''
+const productionGzipExtensions = ['js', 'css']
 
 module.exports = (options = {}) => ({
 
@@ -11,7 +12,7 @@ module.exports = (options = {}) => ({
     vendor: './src/vendor',
     index: './src/main.js'
   },
-  externals:{
+  externals: {
     'vue-router': 'VueRouter',
     'vue': 'Vue',
     'axios': 'axios',
@@ -20,21 +21,21 @@ module.exports = (options = {}) => ({
   },
   output: {
     path: resolve(__dirname, 'dist'),
-    filename: options.dev ? '[name].js' : '[name].js?[chunkhash]',
+    filename: '[name].js',
     chunkFilename: '[id].js?[chunkhash]',
     publicPath: options.dev ? '/assets/' : publicPath
   },
   module: {
     rules: [{
-        test: /\.vue$/,
-        use: ['vue-loader']
-      },
+      test: /\.vue$/,
+      use: ['vue-loader']
+    },
       {
         test: /\.js$/,
         use: ['babel-loader'],
         exclude: /node_modules/
       },
-      { test: /\.mp3$/, loader: 'file-loader'},
+      {test: /\.mp3$/, loader: 'file-loader'},
       {
         test: /\.css$/,
         use: ['style-loader', 'css-loader', 'postcss-loader']
@@ -64,15 +65,12 @@ module.exports = (options = {}) => ({
 
     //gzip 压缩
     new CompressionWebpackPlugin({
-      asset: '[path].gz[query]',   // 目标文件名
-      algorithm: 'gzip',   // 使用gzip压缩
-      test: new RegExp(
-        '\\.(js|css)$'    // 压缩 js 与 css
-      ),
-      threshold: 10240,   // 资源文件大于10240B=10kB时会被压缩
-      minRatio: 0.8  // 最小压缩比达到0.8时才会被压缩
-    }),
-
+      filename: '[path].gz[query]',
+      algorithm: 'gzip',
+      test: new RegExp('\\.(' + productionGzipExtensions.join('|') + ')$'),
+      threshold: 10240,
+      minRatio: 0.8
+    })
 
 
   ],
